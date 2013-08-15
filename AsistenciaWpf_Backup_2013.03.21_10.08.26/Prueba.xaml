@@ -1,0 +1,142 @@
+﻿<telerik:RadWindow x:Class="AsistenciaWpf.Prueba"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                   xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                   Width="592"
+                   Height="599"
+                   Header="Prueba"
+                   IsRestricted="True"
+                   Loaded="RadWindow_Loaded"
+                   RestrictedAreaMargin="1"
+                   telerik:StyleManager.Theme="Windows7"
+                   WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="214*" />
+            <RowDefinition Height="35*" />
+        </Grid.RowDefinitions>
+        <Label Name="label1"
+               Height="28"
+               Margin="41,38,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Content="Fecha del evento:" />
+        <telerik:RadDatePicker Name="RdpDesde"
+                               Width="102"
+                               Margin="182,40,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               SelectedValue="{x:Static sys:DateTime.Now}" />
+        <Label Name="label2"
+               Height="28"
+               Margin="41,84,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Content="Servidor público:" />
+        <Label Name="label3"
+               Height="28"
+               Margin="41,197,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Content="Evento:" />
+        <telerik:RadRadioButton Name="BtnInasistencia"
+                                Width="91"
+                                Height="Auto"
+                                Margin="182,199,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Click="RadButtonsTipoEvento"
+                                Content="Inasistencia"
+                                GroupName="Eventos"
+                                IsChecked="False" Checked="ButtonChecked" Tag="1" />
+        <telerik:RadRadioButton Name="BtnRetardo"
+                                Width="91"
+                                Height="Auto"
+                                Margin="279,199,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Click="RadButtonsTipoEvento"
+                                Content="Retardo"
+                                GroupName="Eventos"
+                                IsChecked="False" Checked="ButtonChecked" Tag="2" />
+        <telerik:RadRadioButton Name="BtnMediodia"
+                                Width="91"
+                                Height="Auto"
+                                Margin="0,199,119,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Click="RadButtonsTipoEvento"
+                                Content="R. Mediodia"
+                                GroupName="Eventos"
+                                IsChecked="False" Checked="ButtonChecked" Tag="3" />
+        <RadioButton Name="RadJustifica"
+                     Height="16"
+                     Margin="182,230,0,0"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     Content="Justificada" Visibility="Hidden" />
+        <RadioButton Name="RadNoJustifica"
+                     Height="16"
+                     Margin="0,230,218,0"
+                     HorizontalAlignment="Right"
+                     VerticalAlignment="Top"
+                     Content="No justificada" Visibility="Hidden" />
+        <telerik:RadComboBox Name="RcbEmpleados"
+                             Width="188"
+                             Margin="182,90,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             DisplayMemberPath="NombreCompleto"
+                             IsEditable="True"
+                             ItemsSource="{Binding}"
+                             SelectedValuePath="IdEmpleado"
+                             SelectionChanged="RcbEmpleados_SelectionChanged" />
+        <Label Name="label4"
+               Height="28"
+               Margin="43,127,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Content="Área:" />
+        <telerik:RadComboBox Name="RcbJustificantes"
+                             Width="361"
+                             Margin="180,273,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             DisplayMemberPath="Descripcion"
+                             ItemsSource="{Binding}"
+                             SelectedValuePath="Identificador" Visibility="Hidden" />
+        <TextBox Name="TxtObservaciones"
+                 Width="361"
+                 Height="148"
+                 Margin="180,317,0,0"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 AcceptsReturn="True" Visibility="Hidden" />
+        <Label Name="LblObservaciones"
+               Height="28"
+               Margin="43,317,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Content="Observaciones:" Visibility="Hidden" />
+        <telerik:RadButton Name="BtnCancelar"
+                           Grid.Row="1"
+                           Width="102"
+                           Height="34"
+                           Margin="0,15,45,0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Top"
+                           Content="Cancelar" />
+        <telerik:RadButton Name="BtnAceptar"
+                           Grid.Row="1"
+                           Width="102"
+                           Height="34"
+                           Margin="331,15,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="Aceptar" Click="BtnAceptar_Click" />
+        <TextBox Height="54" HorizontalAlignment="Left" Margin="182,132,0,0" Name="TxtArea" VerticalAlignment="Top" Width="359" IsReadOnly="True" IsEnabled="False" AcceptsReturn="True" TextWrapping="WrapWithOverflow" />
+        <Label Content="al" Height="28" HorizontalAlignment="Left" Margin="301,38,0,0" Name="LblAl" VerticalAlignment="Top" Visibility="Hidden" />
+        <telerik:RadDatePicker HorizontalAlignment="Right" Margin="0,40,145,0" Name="RdpHasta" SelectedValue="{x:Static sys:DateTime.Now}" VerticalAlignment="Top" Width="102" Visibility="Hidden" />
+    </Grid>
+</telerik:RadWindow>

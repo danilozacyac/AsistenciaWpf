@@ -1,0 +1,287 @@
+﻿<telerik:RadWindow x:Class="AsistenciaWpf.Consulta"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:DateFormatConverter="clr-namespace:AsistenciaWpf.Converter"
+                   xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                   xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                   Width="592"
+                   Height="650"
+                   Header="Consulta"
+                   Loaded="RadWindow_Loaded"
+                   ResizeMode="NoResize"
+                   telerik:StyleManager.Theme="Windows7"
+                   WindowStartupLocation="CenterScreen">
+
+    <Grid>
+        <Grid.Resources>
+            <DateFormatConverter:DateFormatConverter x:Key="DateFormatConverter" />
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="65" />
+            <RowDefinition Height="120" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="45" />
+        </Grid.RowDefinitions>
+
+
+        <telerik:RadGridView Name="RgvEventos"
+                             Grid.Row="2"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             AutoGenerateColumns="False"
+                             CanUserSortGroups="True"
+                             IsHitTestVisible="True"
+                             ItemsSource="{Binding}"
+                             SelectionMode="Multiple"
+                             ShowColumnHeaders="True"
+                             ShowGroupPanel="False">
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewToggleRowDetailsColumn />
+
+                <telerik:GridViewDataColumn Width="120"
+                                            DataMemberBinding="{Binding Expediente}"
+                                            Header="Expediente" />
+                <telerik:GridViewDataColumn Width="*"
+                                            DataMemberBinding="{Binding NombreCompleto}"
+                                            Header="Nombre" />
+                <telerik:GridViewDataColumn Width="60"
+                                            DataMemberBinding="{Binding NumEventos}"
+                                            Header="Total" />
+                <!--
+                    <telerik:GridViewDataColumn Width="*"
+                    DataMemberBinding="{Binding StartDate,
+                    Converter={StaticResource DateFormatConverter}}"
+                    Header="Fecha" />
+                -->
+            </telerik:RadGridView.Columns>
+            <telerik:RadGridView.RowDetailsTemplate>
+                <DataTemplate>
+                    <telerik:RadTabControl x:Name="RadTabControl1"
+                                           Margin="8"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center">
+
+                        <telerik:RadTabItem Header="Incidentes">
+                            <telerik:RadGridView MaxWidth="800"
+                                                 MaxHeight="300"
+                                                 HorizontalAlignment="Stretch"
+                                                 AutoGenerateColumns="False"
+                                                 ItemsSource="{Binding MyEventos}">
+                                <telerik:RadGridView.Columns>
+
+                                    <telerik:GridViewCheckBoxColumn Width="30"
+                                                                    DataMemberBinding="{Binding IsSelected}"
+                                                                    Header=""
+                                                                    IsFilterable="False" />
+                                    <telerik:GridViewDataColumn Width="80"
+                                                                DataMemberBinding="{Binding StartDate,
+                                                                                            Converter={StaticResource DateFormatConverter}}"
+                                                                Header="Fecha"
+                                                                IsFilterable="False"
+                                                                TextAlignment="Center" />
+                                    <telerik:GridViewDataColumn Width="100"
+                                                                DataMemberBinding="{Binding Descripcion}"
+                                                                Header="Descripcion" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding IdEvento}"
+                                                                Header="IdEvento"
+                                                                IsVisible="False" />
+                                    <telerik:GridViewDataColumn Width="200"
+                                                                DataMemberBinding="{Binding Justificante}"
+                                                                Header="Justificante"
+                                                                TextAlignment="Center" />
+                                    <telerik:GridViewDataColumn Width="*"
+                                                                DataMemberBinding="{Binding Observaciones}"
+                                                                Header="Observaciones"
+                                                                IsEnabled="False">
+                                        <telerik:GridViewDataColumn.Style>
+                                            <Style TargetType="{x:Type telerik:GridViewDataColumn}">
+                                                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Value}" />
+                                            </Style>
+                                        </telerik:GridViewDataColumn.Style>
+                                    </telerik:GridViewDataColumn>
+                                </telerik:RadGridView.Columns>
+                            </telerik:RadGridView>
+                        </telerik:RadTabItem>
+
+                    </telerik:RadTabControl>
+                </DataTemplate>
+            </telerik:RadGridView.RowDetailsTemplate>
+
+        </telerik:RadGridView>
+        <TextBlock Name="textBlock1"
+                   Height="23"
+                   Margin="12,12,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Text="Consultar eventos por:" />
+        <telerik:RadComboBox Name="RcbTipoConsulta"
+                             Width="119"
+                             Margin="12,31,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             SelectedIndex="-1"
+                             SelectionChanged="RcbTipoConsulta_SelectionChanged">
+            <telerik:RadComboBoxItem Content="Por año" ToolTip="Todos los eventos presentados el año seleccionado" />
+            <telerik:RadComboBoxItem Content="Por mes" ToolTip="Todos los eventos presentados el mes seleccionado de este año" />
+            <telerik:RadComboBoxItem Content="Por día" ToolTip="Todos los eventos presentados el día seleccionado" />
+            <telerik:RadComboBoxItem Content="Por periodo" ToolTip="Todos los eventos presentados en el periodo seleccionado" />
+            <telerik:RadComboBoxItem Content="Por servidor público " ToolTip="Todos los eventos del servidor público seleccionado" />
+        </telerik:RadComboBox>
+        <StackPanel Name="stackPanel1"
+                    Width="332"
+                    Margin="185,0,55,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Stretch"
+                    Orientation="Horizontal">
+            <telerik:RadComboBox Name="RcbYear"
+                                 Width="100"
+                                 Height="23"
+                                 HorizontalAlignment="Center"
+                                 ItemsSource="{Binding}"
+                                 Visibility="Visible" />
+            <telerik:RadComboBox Name="RcbMes"
+                                 Width="100"
+                                 Height="25"
+                                 DisplayMemberPath="Descripcion"
+                                 ItemsSource="{Binding}"
+                                 SelectedValuePath="Identificador"
+                                 Visibility="Collapsed" />
+            <telerik:RadDatePicker Name="RdpDia"
+                                   Width="125"
+                                   Height="25"
+                                   SelectedValue="{x:Static sys:DateTime.Now}"
+                                   Visibility="Collapsed" />
+            <StackPanel Name="StackPeriodo"
+                        Height="25"
+                        Orientation="Horizontal"
+                        Visibility="Collapsed">
+                <TextBlock Text="Del:  " />
+                <telerik:RadDatePicker Name="RdpDesde"
+                                       Width="125"
+                                       Height="25" />
+                <TextBlock Text="  Al:  " />
+                <telerik:RadDatePicker Name="RdpHasta"
+                                       Width="125"
+                                       Height="25" />
+            </StackPanel>
+            <telerik:RadComboBox Name="RcbEmpleado"
+                                 Width="188"
+                                 Height="25"
+                                 DisplayMemberPath="NombreCompleto"
+                                 IsEditable="True"
+                                 ItemsSource="{Binding}"
+                                 SelectedValuePath="IdEmpleado"
+                                 Visibility="Collapsed" />
+        </StackPanel>
+        <telerik:RadRadioButton Name="BtnInasistencia"
+                                Grid.Row="1"
+                                Width="91"
+                                Height="Auto"
+                                Margin="185,17,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Checked="ButtonChecked"
+                                Click="RadButtonsTipoEvento"
+                                Content="Inasistencia"
+                                GroupName="Eventos"
+                                IsChecked="False"
+                                Tag="1" />
+        <telerik:RadRadioButton Name="BtnRetardo"
+                                Grid.Row="1"
+                                Width="91"
+                                Height="Auto"
+                                Margin="282,17,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Checked="ButtonChecked"
+                                Click="RadButtonsTipoEvento"
+                                Content="Retardo"
+                                GroupName="Eventos"
+                                IsChecked="False"
+                                Tag="2000" />
+        <telerik:RadRadioButton Name="BtnMediodia"
+                                Grid.Row="1"
+                                Width="91"
+                                Height="Auto"
+                                Margin="379,17,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Checked="ButtonChecked"
+                                Click="RadButtonsTipoEvento"
+                                Content="R. Mediodia"
+                                GroupName="Eventos"
+                                IsChecked="False"
+                                Tag="3000" />
+        <RadioButton Name="RadJustifica"
+                     Grid.Row="1"
+                     Height="16"
+                     Margin="185,49,0,0"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     Checked="RadJustifica_Checked"
+                     Content="Justificada"
+                     Unchecked="RadJustifica_Unchecked"
+                     Visibility="Visible" />
+        <RadioButton Name="RadNoJustifica"
+                     Grid.Row="1"
+                     Height="16"
+                     Margin="284,49,0,0"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     Checked="RadNoJustifica_Checked"
+                     Content="No justificada"
+                     Unchecked="RadNoJustifica_Unchecked"
+                     Visibility="Visible" />
+
+        <telerik:RadComboBox Name="RcbJustificantes"
+                             Grid.Row="1"
+                             Width="285"
+                             Margin="185,80,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             DisplayMemberPath="Descripcion"
+                             ItemsSource="{Binding}"
+                             SelectedValuePath="Identificador"
+                             Visibility="Visible" />
+        <Button Name="BtnConsulta"
+                Grid.Row="3"
+                Width="102"
+                Height="40"
+                Margin="12,3,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Click="BtnConsulta_Click">
+            <StackPanel HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Orientation="Horizontal">
+                <Image Source="/Asistencia;component/Images/search.png" />
+                <StackPanel HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Orientation="Vertical">
+                    <TextBlock Text="Realizar" TextAlignment="Center" />
+                    <TextBlock Text="Consulta" />
+                </StackPanel>
+            </StackPanel>
+        </Button>
+
+        <telerik:RadButton Name="BtnReporte"
+                           Grid.Row="3"
+                           Width="102"
+                           Height="40"
+                           Margin="463,4,0,1"
+                           HorizontalAlignment="Left"
+                           Click="BtnReporte_Click">
+            <StackPanel HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Orientation="Horizontal">
+                <Image Source="/Asistencia;component/Images/report.png" />
+                <StackPanel HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Orientation="Vertical">
+                    <TextBlock Text="Generar" TextAlignment="Center" />
+                    <TextBlock Text="Reporte" />
+                </StackPanel>
+            </StackPanel>
+        </telerik:RadButton>
+    </Grid>
+</telerik:RadWindow>

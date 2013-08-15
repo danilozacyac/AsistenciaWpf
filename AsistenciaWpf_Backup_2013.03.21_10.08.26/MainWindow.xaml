@@ -1,0 +1,55 @@
+﻿<Window x:Class="AsistenciaWpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:my="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        Title="MainWindow"
+        Width="525"
+        Height="350" WindowState="Maximized">
+    <Grid>
+        <telerik:RadRibbonView x:Name="radRibbonBar1"
+                               Title="Control de Asistencia"
+                               ApplicationButtonImageSource="{Binding AppIcon}"
+                               ApplicationName="Coordinación de Compilación y Sistematización de Tesis"
+                               BackstageClippingElement="{Binding ElementName=RootGrid}"
+                               HelpButtonVisibility="Visible"
+                               MinimizeButtonVisibility="Visible"
+                               telerik:KeyTipService.IsKeyTipsEnabled="True">
+            <telerik:RadRibbonTab>
+                <telerik:RadRibbonGroup>
+                    <telerik:RadRibbonButton Name="RegistraEventos"
+                                             Click="RegistraEventos_Click"
+                                             IsAutoSize="True"
+                                             LargeImage="/Asistencia;component/Images/notes.png"
+                                             Size="Large"
+                                             Text="Registrar Eventos" />
+                    <telerik:RadRibbonButton Name="ConsultaEventos"
+                                             IsAutoSize="True"
+                                             LargeImage="/Asistencia;component/Images/search.png"
+                                             Size="Large"
+                                             Text="Consultar" Click="ConsultaEventos_Click" />
+                </telerik:RadRibbonGroup>
+                <!--<telerik:RadRibbonGroup Header="Reportes" />-->
+                <telerik:RadRibbonGroup Header="Servidores Públicos">
+                    <telerik:RadRibbonButton Name="AgregaServidor"
+                                             IsAutoSize="True"
+                                             LargeImage="/Asistencia;component/Images/addUser.png"
+                                             Size="Large"
+                                             Text="Agregar" Click="AgregaServidor_Click" />
+                    <telerik:RadRibbonButton Name="EditarServidor"
+                                             IsAutoSize="True"
+                                             LargeImage="/Asistencia;component/Images/editUser.png"
+                                             Size="Large"
+                                             Text="Editar" Click="EditarServidor_Click" />
+                    <telerik:RadRibbonButton Name="EliminarServidor"
+                                             IsAutoSize="True"
+                                             LargeImage="/Asistencia;component/Images/deleteUser.png"
+                                             Size="Large"
+                                             Text="Eliminar" Click="EliminarServidor_Click" />
+                </telerik:RadRibbonGroup>
+
+            </telerik:RadRibbonTab>
+        </telerik:RadRibbonView>
+
+    </Grid>
+</Window>
