@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 
@@ -65,8 +66,8 @@ namespace AsistenciaWpf.Dto
             set { this.idArea = value; }
         }
 
-        private List<Eventos> myEventos = new List<Eventos>();
-        public List<Eventos> MyEventos
+        private ObservableCollection<Eventos> myEventos = new ObservableCollection<Eventos>();
+        public ObservableCollection<Eventos> MyEventos
         {
             get { return this.myEventos; }
             set { this.myEventos = value; }
@@ -77,9 +78,15 @@ namespace AsistenciaWpf.Dto
         {
             myEventos.Add(evento);
         }
-        public List<Eventos> GetEventos()
+
+        public ObservableCollection<Eventos> GetEventos()
         {
             return this.myEventos; 
+        }
+
+        public void DeleteSelectedEvent(Eventos eventos)
+        {
+            this.myEventos.Remove(eventos);
         }
 
         public string Error

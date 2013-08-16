@@ -106,7 +106,40 @@ namespace AsistenciaWpf.Model
             }
         }
 
+        /// <summary>
+        /// Elimina el registro del evento seleccionado
+        /// </summary>
+        /// <param name="evento"></param>
+        public void DeleteEvento(Eventos evento)
+        {
+            OleDbConnection sqlConne = DbConnectionDac.GetConexion();
+            OleDbCommand cmd;
 
+            try
+            {
+                cmd = sqlConne.CreateCommand();
+                cmd.Connection = sqlConne;
+
+                sqlConne.Open();
+
+                String sqlCadena = "DELETE FROM Registro_Inasis WHERE Id_Registro = " + evento.IdEvento;
+
+                cmd.CommandText = sqlCadena;
+                cmd.ExecuteNonQuery();
+            }
+            catch (OleDbException sql)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + sql.Source + sql.Message, "Error Interno");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno");
+            }
+            finally
+            {
+                sqlConne.Close();
+            }
+        }
 
         public List<Empleados> GetEventosConsulta(int tipoFiltro,int tipoEvento,object paramBusqueda)
         {

@@ -150,6 +150,9 @@
     <Compile Include="EditEmployee.xaml.cs">
       <DependentUpon>EditEmployee.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LogIn.xaml.cs">
+      <DependentUpon>LogIn.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\AreasModel.cs" />
     <Compile Include="Model\EmpleadosModel.cs" />
     <Compile Include="Model\EventosModel.cs" />
@@ -165,6 +168,7 @@
     <Compile Include="Singletons\ExpedientesSingleton.cs" />
     <Compile Include="Singletons\JustificacionesSingleton.cs" />
     <Compile Include="Singletons\MesesSingleton.cs" />
+    <Compile Include="Utils\ConstAsistencia.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Page Include="AddEmployee.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -181,6 +185,10 @@
     <Page Include="EditEmployee.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LogIn.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

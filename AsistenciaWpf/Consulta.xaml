@@ -26,10 +26,13 @@
 
         <telerik:RadGridView Name="RgvEventos"
                              Grid.Row="2"
+                             
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              AutoGenerateColumns="False"
                              CanUserSortGroups="True"
+                             FilteringMode="Popup"
+                             Focusable="True"
                              IsHitTestVisible="True"
                              ItemsSource="{Binding}"
                              SelectionMode="Multiple"
@@ -64,12 +67,15 @@
                         <telerik:RadTabItem Header="Incidentes">
                             <telerik:RadGridView MaxWidth="800"
                                                  MaxHeight="300"
+                                                 ShowGroupPanel="False"
+                                                 EditTriggers="CellClick"
                                                  HorizontalAlignment="Stretch"
                                                  AutoGenerateColumns="False"
                                                  ItemsSource="{Binding MyEventos}">
                                 <telerik:RadGridView.Columns>
 
                                     <telerik:GridViewCheckBoxColumn Width="30"
+                                                                    AutoSelectOnEdit="True"
                                                                     DataMemberBinding="{Binding IsSelected}"
                                                                     Header=""
                                                                     IsFilterable="False" />
@@ -243,7 +249,7 @@
                              ItemsSource="{Binding}"
                              SelectedValuePath="Identificador"
                              Visibility="Visible" />
-        <Button Name="BtnConsulta"
+        <telerik:RadButton Name="BtnConsulta"
                 Grid.Row="3"
                 Width="102"
                 Height="40"
@@ -262,7 +268,7 @@
                     <TextBlock Text="Consulta" />
                 </StackPanel>
             </StackPanel>
-        </Button>
+        </telerik:RadButton>
 
         <telerik:RadButton Name="BtnReporte"
                            Grid.Row="3"
@@ -280,6 +286,25 @@
                             Orientation="Vertical">
                     <TextBlock Text="Generar" TextAlignment="Center" />
                     <TextBlock Text="Reporte" />
+                </StackPanel>
+            </StackPanel>
+        </telerik:RadButton>
+        <telerik:RadButton Name="BtnEliminar"
+                Grid.Row="3"
+                Width="102"
+                Height="40"
+                Margin="130,3,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top" Click="BtnEliminar_Click">
+            <StackPanel HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Orientation="Horizontal">
+                <Image Source="/Asistencia;component/Images/search.png" />
+                <StackPanel HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Orientation="Vertical">
+                    <TextBlock Text="Eliminar" TextAlignment="Center" />
+                    <TextBlock Text="Evento" />
                 </StackPanel>
             </StackPanel>
         </telerik:RadButton>

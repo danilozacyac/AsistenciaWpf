@@ -29,7 +29,8 @@
                                Margin="182,40,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
-                               SelectedValue="{x:Static sys:DateTime.Now}" />
+                               SelectedValue="{x:Static sys:DateTime.Now}"
+                               SelectionChanged="RdpDesde_SelectionChanged" />
         <Label Name="label2"
                Height="28"
                Margin="41,84,0,0"
@@ -125,7 +126,7 @@
                  HorizontalAlignment="Left"
                  VerticalAlignment="Top"
                  AcceptsReturn="True"
-                 Visibility="Hidden" />
+                 Visibility="Collapsed" />
         <Label Name="LblObservaciones"
                Grid.Row="1"
                Height="28"
@@ -133,7 +134,7 @@
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Content="Observaciones:"
-               Visibility="Hidden" />
+               Visibility="Collapsed" />
         <telerik:RadButton Name="BtnCancelar"
                            Grid.Row="2"
                            Width="102"

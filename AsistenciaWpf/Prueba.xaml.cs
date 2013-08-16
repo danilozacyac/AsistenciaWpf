@@ -5,6 +5,7 @@ using AsistenciaWpf.Dto;
 using AsistenciaWpf.Model;
 using AsistenciaWpf.Singletons;
 using Telerik.Windows.Controls;
+using AsistenciaWpf.Utils;
 
 namespace AsistenciaWpf
 {
@@ -20,12 +21,25 @@ namespace AsistenciaWpf
             InitializeComponent();
         }
 
+       
+
         private void RadWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            
             RcbEmpleados.DataContext = new EmpleadosModel().GetListaEmpleados();
             RcbJustificantes.DataContext = JustificacionesSingleton.Compartidos;
 
             RdpHasta.SelectableDateStart = RdpDesde.SelectedDate;
+
+            if (ConstAsistencia.IdUsuario == 1)
+            {
+                BtnInasistencia.IsChecked = true;
+                BtnRetardo.IsEnabled = false;
+                BtnMediodia.IsEnabled = false;
+                RadJustifica.IsChecked = true;
+                RadNoJustifica.IsEnabled = false;
+                this.RadButtonsTipoEvento((object)BtnInasistencia, null);
+            }
         }
 
         private void RcbEmpleados_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -46,7 +60,7 @@ namespace AsistenciaWpf
         {
             RadRadioButton btn = (RadRadioButton)sender;
 
-            Visibility visible = (btn.Name.Equals("BtnInasistencia")) ? Visibility.Visible : Visibility.Hidden;
+            Visibility visible = (btn.Name.Equals("BtnInasistencia")) ? Visibility.Visible : Visibility.Collapsed;
 
             RadJustifica.Visibility = visible;
             RadNoJustifica.Visibility = visible;
@@ -78,12 +92,23 @@ namespace AsistenciaWpf
                 new EventosModel().SetEventoAislado(evento);
             else
                 new EventosModel().SetEventoPeriodico(evento);
-            
+
+            this.Close();
+
         }
 
         private void ButtonChecked(object sender, RoutedEventArgs e)
         {
             idEvento = Convert.ToInt16(((RadRadioButton)sender).Tag);
+        }
+
+        private void RdpDesde_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (RdpDesde.SelectedDate != null && RdpHasta != null)
+            {
+                RdpHasta.SelectedDate = RdpDesde.SelectedDate;
+                RdpHasta.SelectableDateStart = RdpDesde.SelectedDate;
+            }
         }
     }
 

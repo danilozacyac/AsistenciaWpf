@@ -94,7 +94,15 @@ namespace AsistenciaWpf
         private void BtnConsulta_Click(object sender, RoutedEventArgs e)
         {
             if (BtnInasistencia.IsChecked == true && RadJustifica.IsChecked == true)
-                idEvento = (Int32)RcbJustificantes.SelectedValue;
+            {
+                if (RcbJustificantes.SelectedIndex != -1)
+                    idEvento = (Int32)RcbJustificantes.SelectedValue;
+                else
+                {
+                    MessageBox.Show("Seleccione un tipo de incidente", "Atención:", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+            }
 
             switch (RcbTipoConsulta.SelectedIndex)
             {
@@ -134,6 +142,31 @@ namespace AsistenciaWpf
         {
             ReporteIncidentes reporte = new ReporteIncidentes(empleados);
             reporte.GetReporteDeIncidentes();
+        }
+
+        private void BtnEliminar_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (Empleados empleado in empleados)
+            {
+                List<Eventos> eventosDel = new List<Eventos>();
+                foreach (Eventos evento in empleado.MyEventos)
+                {
+                    if (evento.IsSelected)
+                        eventosDel.Add(evento);
+                }
+
+                EventosModel model = new EventosModel();
+
+                int count = 0;
+                while (count < eventosDel.Count)
+                {
+                    empleado.DeleteSelectedEvent(eventosDel[count]);
+                    model.DeleteEvento(eventosDel[count]);
+                    count++;
+                }
+
+                model = null;
+            }
         }
     }
 }
