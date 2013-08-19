@@ -88,12 +88,18 @@ namespace AsistenciaWpf
             evento.IdIncidente = (idEvento == 1) ? Convert.ToInt32(RcbJustificantes.SelectedValue) : 0;
             evento.Observaciones = (idEvento == 1) ? TxtObservaciones.Text : " ";
 
-            if (evento.StartDate == evento.EndDate)
-                new EventosModel().SetEventoAislado(evento);
-            else
-                new EventosModel().SetEventoPeriodico(evento);
+            bool isEventRegisterOk = false;
 
-            this.Close();
+            if (evento.StartDate == evento.EndDate)
+                isEventRegisterOk = new EventosModel().SetEventoAislado(evento);
+            else
+            {
+                new EventosModel().SetEventoPeriodico(evento);
+                isEventRegisterOk = true;
+            }
+
+            if(isEventRegisterOk)
+                this.Close();
 
         }
 

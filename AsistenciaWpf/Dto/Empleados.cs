@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace AsistenciaWpf.Dto
 {
-    public class Empleados : IDataErrorInfo
+    public class Empleados : IDataErrorInfo, INotifyPropertyChanged
     {
         private int numEventos;
 
@@ -19,6 +19,7 @@ namespace AsistenciaWpf.Dto
             set
             {
                 this.numEventos = value;
+                OnPropertyChanged("NumEventos");
             }
         }
 
@@ -77,6 +78,7 @@ namespace AsistenciaWpf.Dto
         public void SetEventos(Eventos evento)
         {
             myEventos.Add(evento);
+            numEventos++;
         }
 
         public ObservableCollection<Eventos> GetEventos()
@@ -87,6 +89,7 @@ namespace AsistenciaWpf.Dto
         public void DeleteSelectedEvent(Eventos eventos)
         {
             this.myEventos.Remove(eventos);
+            numEventos--;
         }
 
         public string Error
@@ -116,6 +119,13 @@ namespace AsistenciaWpf.Dto
                 }
                 return result;
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string propertyName)
+        {
+            if (this.PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

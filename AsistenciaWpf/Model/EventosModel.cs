@@ -13,8 +13,6 @@ namespace AsistenciaWpf.Model
     {
         public EventosModel()
         {
-            
-
         }
 
         /// <summary>
@@ -39,11 +37,8 @@ namespace AsistenciaWpf.Model
 
                 while (reader.Read())
                 {
-                    eventos.Add(new PairPropertyObject
-                (Convert.ToInt32(reader["Id_Evento"]), reader["Descripcion"].ToString()));
-
+                    eventos.Add(new PairPropertyObject(Convert.ToInt32(reader["Id_Evento"]), reader["Descripcion"].ToString()));
                 }
-
             }
             catch (Exception ex)
             {
@@ -70,14 +65,13 @@ namespace AsistenciaWpf.Model
 
                 evento.StartDate = evento.StartDate.AddDays(1);
             }
-            
         }
 
         /// <summary>
         /// Ingresa un evento que se presenta solo una vez
         /// </summary>
         /// <param name="evento"></param>
-        public void SetEventoAislado(Eventos evento)
+        public bool SetEventoAislado(Eventos evento)
         {
             OleDbConnection oleConne = DbConnectionDac.GetConexion();
             OleDbCommand cmd;
@@ -86,24 +80,34 @@ namespace AsistenciaWpf.Model
             cmd.Connection = oleConne;
             try
             {
-                oleConne.Open();
 
-                DateTime fecha = evento.StartDate;
+                bool isEventDayExist = this.IsEventDayExist(evento);
+
+                if (isEventDayExist)
+                {
+                    MessageBox.Show("El empleado seleccionado ya tiene un incidente registrado el día " + evento.StartDate.ToShortDateString() + " favor de verificar o eliminar el " +
+                        " incidente anterior", "Atención:", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return false;
+                }
+
+                oleConne.Open();
 
                 cmd.CommandText = "INSERT INTO Registro_Inasis(Id_Evento, Id_Empleado, Id_Incidente, Observaciones,Fecha,Año,Mes,Dia) " +
                                   "VALUES(" + evento.IdEvento + "," + evento.IdEmpleado + "," + evento.IdIncidente + ",'" + evento.Observaciones +
-                                  "','" + fecha.ToShortDateString() + "'," + fecha.Year + "," + fecha.Month + "," + fecha.Day + ")";
+                                  "','" + evento.StartDate.ToShortDateString() + "'," + evento.StartDate.Year + "," + evento.StartDate.Month + "," + evento.StartDate.Day + ")";
 
                 cmd.ExecuteNonQuery();
-
             }
             catch (Exception ex)
             {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno");
             }
             finally
             {
                 oleConne.Close();
             }
+
+            return true;
         }
 
         /// <summary>
@@ -141,7 +145,7 @@ namespace AsistenciaWpf.Model
             }
         }
 
-        public List<Empleados> GetEventosConsulta(int tipoFiltro,int tipoEvento,object paramBusqueda)
+        public List<Empleados> GetEventosConsulta(int tipoFiltro, int tipoEvento, object paramBusqueda)
         {
             OleDbConnection oleConne = DbConnectionDac.GetConexion();
             OleDbCommand cmd = null;
@@ -153,14 +157,15 @@ namespace AsistenciaWpf.Model
             {
                 oleConne.Open();
                 string sqlCadena = "SELECT R.Id_Registro,E.Id_empleado, E.NombreCompleto, Ev.Descripcion, J.Justificacion, R.Fecha, R.Observaciones,E.Expediente " +
-                       "FROM ((Empleados E INNER JOIN Registro_Inasis R ON E.Id_empleado = R.Id_Empleado) " +
-                       "INNER JOIN Evento Ev ON R.Id_Evento = Ev.Id_Evento) " +
-                       "INNER JOIN Justificaciones_Inasistencia J ON R.Id_Incidente = J.Id_Incidente WHERE";
+                                   "FROM ((Empleados E INNER JOIN Registro_Inasis R ON E.Id_empleado = R.Id_Empleado) " +
+                                   "INNER JOIN Evento Ev ON R.Id_Evento = Ev.Id_Evento) " +
+                                   "INNER JOIN Justificaciones_Inasistencia J ON R.Id_Incidente = J.Id_Incidente WHERE";
 
                 switch (tipoFiltro)
                 {
-                        //Por año
-                    case 0: sqlCadena += " R.Año = @Year";
+                    //Por año
+                    case 0:
+                        sqlCadena += " R.Año = @Year";
                         OleDbParameter year = new OleDbParameter("@Year", OleDbType.Numeric, 0);
                         year.Value = (Int32)paramBusqueda;
                         cmd = this.GetFiltroPorTipoEvento(oleConne, new List<OleDbParameter>() { year }, sqlCadena, tipoEvento);
@@ -174,7 +179,7 @@ namespace AsistenciaWpf.Model
                         OleDbParameter mes = new OleDbParameter("@Mes", OleDbType.Numeric, 0);
                         mes.Value = (Int32)paramBusqueda;
 
-                        cmd = this.GetFiltroPorTipoEvento(oleConne, new List<OleDbParameter>() { years,mes }, sqlCadena, tipoEvento);
+                        cmd = this.GetFiltroPorTipoEvento(oleConne, new List<OleDbParameter>() { years, mes }, sqlCadena, tipoEvento);
                         break;
                         //Por día
                     case 2: 
@@ -243,19 +248,15 @@ namespace AsistenciaWpf.Model
                         evento.StartDate = Convert.ToDateTime(reader["fecha"]);
                         evento.Observaciones = reader["Observaciones"].ToString();
                         empleado.SetEventos(evento);
-
-
                         
                         empleadosEventos.Add(empleado);
                     }
-
                 }
 
                 foreach (Empleados empl in empleadosEventos)
                 {
                     empl.NumEventos = empl.MyEventos.Count();
                 }
-
             }
             catch (Exception ex)
             {
@@ -269,7 +270,7 @@ namespace AsistenciaWpf.Model
             return empleadosEventos;
         }
 
-        private OleDbCommand GetFiltroPorTipoEvento(OleDbConnection oleConne,List<OleDbParameter> parameters,string sqlCadena, int tipoEvento)
+        private OleDbCommand GetFiltroPorTipoEvento(OleDbConnection oleConne, List<OleDbParameter> parameters, string sqlCadena, int tipoEvento)
         {
             if (tipoEvento != 2000 && tipoEvento != 3000)
             {
@@ -292,7 +293,6 @@ namespace AsistenciaWpf.Model
             }
             else
             {
-                
                 sqlCadena += " AND R.Id_Evento = @IdEvento";
                 OleDbParameter idEvento = new OleDbParameter("@IdEvento", OleDbType.Numeric, 0);
                 idEvento.Value = (tipoEvento / 1000);
@@ -311,8 +311,58 @@ namespace AsistenciaWpf.Model
             return cmd;
         }
 
+        /// <summary>
+        /// Verifica que el dia que se esta intentando ingresar un evento nuevo, no exista uno previo para el empleado seleccionado
+        /// </summary>
+        /// <param name="evento"></param>
+        /// <returns></returns>
+        public bool IsEventDayExist(Eventos evento)
+        {
+            OleDbConnection oleConne = DbConnectionDac.GetConexion();
+            OleDbCommand cmd = null;
+            OleDbDataReader reader;
+
+            bool eventExist = false;
 
 
+            try
+            {
+                oleConne.Open();
+                string sqlCadena = "SELECT * FROM Registro_Inasis WHERE Año = @Year AND Mes = @Mes AND Dia = @Dia AND Id_Empleado = @Id";
 
+                cmd = new OleDbCommand(sqlCadena, oleConne);
+
+                OleDbParameter year = new OleDbParameter("@Year", OleDbType.Numeric, 0);
+                year.Value = evento.StartDate.Year;
+                cmd.Parameters.Add(year);
+
+                OleDbParameter mes = new OleDbParameter("@Mes", OleDbType.Numeric, 0);
+                mes.Value = evento.StartDate.Month;
+                cmd.Parameters.Add(mes); 
+                OleDbParameter dia = new OleDbParameter("@Dia", OleDbType.Numeric, 0);
+                dia.Value = evento.StartDate.Day;
+                cmd.Parameters.Add(dia); 
+                OleDbParameter empleado = new OleDbParameter("@Id", OleDbType.Numeric, 0);
+                empleado.Value = evento.IdEmpleado;
+                cmd.Parameters.Add(empleado);
+
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    eventExist = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error ({0}) : {1}" + ex.Source + ex.Message, "Error Interno");
+            }
+            finally
+            {
+                oleConne.Close();
+            }
+
+            return eventExist;
+        }
     }
 }
