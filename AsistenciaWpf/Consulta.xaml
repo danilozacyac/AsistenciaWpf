@@ -4,7 +4,7 @@
                    xmlns:DateFormatConverter="clr-namespace:AsistenciaWpf.Converter"
                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
                    xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-                   Width="592"
+                   Width="750"
                    Height="650"
                    Header="Consulta"
                    Loaded="RadWindow_Loaded"
@@ -121,7 +121,7 @@
                    VerticalAlignment="Top"
                    Text="Consultar eventos por:" />
         <telerik:RadComboBox Name="RcbTipoConsulta"
-                             Width="119"
+                             Width="165"
                              Margin="12,31,0,0"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
@@ -274,8 +274,8 @@
                            Grid.Row="3"
                            Width="102"
                            Height="40"
-                           Margin="463,4,0,1"
-                           HorizontalAlignment="Left"
+                           Margin="0,3,12,2"
+                           HorizontalAlignment="Right"
                            Click="BtnReporte_Click">
             <StackPanel HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"

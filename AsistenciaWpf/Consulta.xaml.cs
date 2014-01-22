@@ -34,6 +34,8 @@ namespace AsistenciaWpf
             RcbEmpleado.DataContext = new EmpleadosModel().GetListaEmpleados();
             RcbJustificantes.DataContext = JustificacionesSingleton.Compartidos;
             RcbTipoConsulta.SelectedIndex = 0;
+
+            this.Width = System.Windows.SystemParameters.PrimaryScreenWidth - (System.Windows.SystemParameters.PrimaryScreenWidth * .4);
         }
 
         private void RcbTipoConsulta_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -44,7 +46,7 @@ namespace AsistenciaWpf
             StackPeriodo.Visibility = (RcbTipoConsulta.SelectedIndex == 3) ? Visibility.Visible : Visibility.Collapsed;
             RcbEmpleado.Visibility = (RcbTipoConsulta.SelectedIndex == 4) ? Visibility.Visible : Visibility.Collapsed;
         }
-
+        
         private List<int> GetYears()
         {
             List<int> years = new List<int>();
@@ -107,25 +109,28 @@ namespace AsistenciaWpf
             switch (RcbTipoConsulta.SelectedIndex)
             {
                 //Por año
-                case 0: empleados = modelEventos.GetEventosConsulta(RcbTipoConsulta.SelectedIndex, idEvento, Convert.ToInt32(RcbYear.Text));
+                case 0:
+                    empleados = modelEventos.GetEventosConsulta(RcbTipoConsulta.SelectedIndex, idEvento, Convert.ToInt32(RcbYear.Text));
                     break;
-                //Por mes
-                case 1: empleados = modelEventos.GetEventosConsulta(RcbTipoConsulta.SelectedIndex, idEvento, Convert.ToInt32(RcbMes.SelectedValue));
+                    //Por mes
+                case 1:
+                    empleados = modelEventos.GetEventosConsulta(RcbTipoConsulta.SelectedIndex, idEvento, Convert.ToInt32(RcbMes.SelectedValue));
                     break;
-                //Por día
-                case 2: empleados = modelEventos.GetEventosConsulta(RcbTipoConsulta.SelectedIndex, idEvento, RdpDia.SelectedDate);
+                    //Por día
+                case 2:
+                    empleados = modelEventos.GetEventosConsulta(RcbTipoConsulta.SelectedIndex, idEvento, RdpDia.SelectedDate);
                     break;
-                //Por periodo
-                case 3: empleados = modelEventos.GetEventosConsulta(RcbTipoConsulta.SelectedIndex, idEvento, new DateTime[] { RdpDesde.SelectedDate.Value, RdpHasta.SelectedDate.Value });
+                    //Por periodo
+                case 3:
+                    empleados = modelEventos.GetEventosConsulta(RcbTipoConsulta.SelectedIndex, idEvento, new DateTime[] { RdpDesde.SelectedDate.Value, RdpHasta.SelectedDate.Value });
                     break;
-                //Por servidor público
+                    //Por servidor público
                 case 4:
                     empleados = modelEventos.GetEventosConsulta(RcbTipoConsulta.SelectedIndex, idEvento, Convert.ToInt32(RcbEmpleado.SelectedValue));
                     break;
             }
 
             RgvEventos.ItemsSource = empleados;
-
         }
 
         private void RadNoJustifica_Checked(object sender, RoutedEventArgs e)
