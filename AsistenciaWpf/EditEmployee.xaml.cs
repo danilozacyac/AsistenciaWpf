@@ -55,10 +55,10 @@ namespace AsistenciaWpf
 
         private void BtnAceptar_Click(object sender, RoutedEventArgs e)
         {
-            int pos = 0;
-            Int32.TryParse(TxtExpediente.Text, out pos);
+            int expediente = 0;
+            Int32.TryParse(TxtExpediente.Text, out expediente);
 
-            if (pos == 0)
+            if (expediente == 0)
             {
                 RadWindow.Alert("Ingrese un número de expediente válido");
             }
@@ -66,9 +66,10 @@ namespace AsistenciaWpf
             {
                 empleado.Nombre = TxtNombre.Text;
                 empleado.Apellidos = TxtApellidos.Text;
-                empleado.Expediente = pos;
+                empleado.Expediente = expediente;
                 empleado.IdArea = Convert.ToInt32(RcbArea.SelectedValue);
                 new EmpleadosModel().UpdateEmployee(empleado);
+                this.Close();
             }
             
         }

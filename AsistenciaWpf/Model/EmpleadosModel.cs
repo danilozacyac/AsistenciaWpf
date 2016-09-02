@@ -238,7 +238,7 @@ namespace AsistenciaWpf.Model
                 dataAdapter = new OleDbDataAdapter();
                 dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, sqlConne);
 
-                dataAdapter.Fill(dataSet, "Empleado");
+                dataAdapter.Fill(dataSet, "Empleados");
 
                 dr = dataSet.Tables[0].Rows[0];
                 dr.BeginEdit();
@@ -254,8 +254,8 @@ namespace AsistenciaWpf.Model
 
                 string sSql = "UPDATE Empleados " +
                               "SET Nombre = @Nombre, " +
-                              " Apellidos = @Apellidos, NombreCompleto = @NombreCompleto, IdArea= @IdArea";
-                sSql = sSql + " WHERE Expediente = @Expediente";
+                              " Apellidos = @Apellidos, NombreCompleto = @NombreCompleto, Id_Area= @Id_Area " +
+                              " WHERE Expediente = @Expediente";
 
                 dataAdapter.UpdateCommand.CommandText = sSql;
 
@@ -265,7 +265,7 @@ namespace AsistenciaWpf.Model
                 dataAdapter.UpdateCommand.Parameters.Add("@Id_Area", OleDbType.Numeric, 0, "Id_Area");
                 dataAdapter.UpdateCommand.Parameters.Add("@Expediente", OleDbType.Numeric, 0, "Expediente");
 
-                dataAdapter.Update(dataSet, "Empleado");
+                dataAdapter.Update(dataSet, "Empleados");
                 dataSet.Dispose();
                 dataAdapter.Dispose();
 
