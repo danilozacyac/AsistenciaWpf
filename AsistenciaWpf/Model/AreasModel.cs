@@ -1,42 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.OleDb;
 using System.Linq;
-using AsistenciaWpf.Dto;
-using AsistenciaWpf.DataAccess;
 using System.Windows;
+using AsistenciaWpf.Dto;
 
 namespace AsistenciaWpf.Model
 {
     public class AreasModel
     {
-
+        private readonly string connectionString = ConfigurationManager.ConnectionStrings["Base"].ConnectionString;
 
         public List<Areas> GetListaAreas()
         {
             List<Areas> areas = new List<Areas>();
 
-            OleDbConnection oleConn = DbConnectionDac.GetConexion();
+            OleDbConnection oleConn = new OleDbConnection(connectionString);
             OleDbCommand cmd;
             OleDbDataReader reader;
 
-            cmd = oleConn.CreateCommand();
-            cmd.Connection = oleConn;
-            
             try
             {
                 oleConn.Open();
-                string miQry = "SELECT * FROM Areas";
-                cmd = new OleDbCommand(miQry, oleConn);
+                cmd = new OleDbCommand("SELECT * FROM Areas", oleConn);
                 reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    Areas area = new Areas();
-                    area.IdArea = Convert.ToInt32(reader["Id_Area"]);
-                    area.Descripcion = reader["Descripcion"].ToString();
-                    area.DescMay = reader["DescMay"].ToString();
-                    area.Abreviatura = reader["Abreviatura"].ToString();
+                    Areas area = new Areas()
+                    {
+                        IdArea = Convert.ToInt32(reader["Id_Area"]),
+                        Descripcion = reader["Descripcion"].ToString(),
+                        DescMay = reader["DescMay"].ToString(),
+                        Abreviatura = reader["Abreviatura"].ToString()
+                    };
 
                     areas.Add(area);
 

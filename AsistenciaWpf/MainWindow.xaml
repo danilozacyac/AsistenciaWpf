@@ -3,31 +3,35 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:my="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-        Title="MainWindow"
+        Title="Coordinación de Compilación y Sistematización de Tesis"
         Width="525"
         Height="350"
+        Icon="1357336438_24249.ico"
         WindowState="Maximized">
     <Grid>
-        <telerik:RadRibbonView x:Name="radRibbonBar1"
-                               Title="Control de Asistencia"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <telerik:RadRibbonView x:Name="BarraPrincipal"
                                ApplicationButtonImageSource="{Binding AppIcon}"
-                               ApplicationName="Coordinación de Compilación y Sistematización de Tesis"
+                               ApplicationButtonVisibility="Collapsed"
+                               ApplicationName="Control de Asistencia"
                                BackstageClippingElement="{Binding ElementName=RootGrid}"
-                               HelpButtonVisibility="Visible"
-                               MinimizeButtonVisibility="Visible"
                                telerik:KeyTipService.IsKeyTipsEnabled="True">
-            <telerik:RadRibbonTab>
+            <telerik:RadRibbonTab Header="Principal">
                 <telerik:RadRibbonGroup>
                     <telerik:RadRibbonButton Name="RegistraEventos"
                                              Click="RegistraEventos_Click"
                                              IsAutoSize="True"
-                                             LargeImage="/Asistencia;component/Images/notes.png"
+                                             LargeImage="Resources/notes.png"
                                              Size="Large"
                                              Text="Registrar Eventos" />
                     <telerik:RadRibbonButton Name="ConsultaEventos"
                                              Click="ConsultaEventos_Click"
                                              IsAutoSize="True"
-                                             LargeImage="/Asistencia;component/Images/search.png"
+                                             LargeImage="Resources/search.png"
                                              Size="Large"
                                              Text="Consultar" />
                 </telerik:RadRibbonGroup>
@@ -36,25 +40,80 @@
                     <telerik:RadRibbonButton Name="AgregaServidor"
                                              Click="AgregaServidor_Click"
                                              IsAutoSize="True"
-                                             LargeImage="/Asistencia;component/Images/addUser.png"
+                                             LargeImage="Resources/addUser.png"
                                              Size="Large"
                                              Text="Agregar" />
                     <telerik:RadRibbonButton Name="EditarServidor"
                                              Click="EditarServidor_Click"
                                              IsAutoSize="True"
-                                             LargeImage="/Asistencia;component/Images/editUser.png"
+                                             LargeImage="Resources/editUser.png"
                                              Size="Large"
                                              Text="Editar" />
                     <telerik:RadRibbonButton Name="EliminarServidor"
                                              Click="EliminarServidor_Click"
                                              IsAutoSize="True"
-                                             LargeImage="/Asistencia;component/Images/deleteUser.png"
+                                             LargeImage="Resources/deleteUser.png"
                                              Size="Large"
                                              Text="Eliminar" />
                 </telerik:RadRibbonGroup>
 
             </telerik:RadRibbonTab>
+            <telerik:RadRibbonTab x:Name="TabConsultas"
+                                  Header="Consultas"
+                                  Visibility="Collapsed">
+                <telerik:RadRibbonGroup Header="Tipo de Consulta">
+                    <telerik:RadRibbonButton Uid="100"
+                                             x:Name="RBtnPorYear"
+                                             Click="TipoConsultaSearch"
+                                             Content="Por año"
+                                             LargeImage="Resources/year.png"
+                                             Size="Large" />
+                    <telerik:RadRibbonButton Uid="101"
+                                             x:Name="RBtnPorMes"
+                                             Click="TipoConsultaSearch"
+                                             Content="Por mes"
+                                             LargeImage="Resources/month.png"
+                                             Size="Large" />
+                    <telerik:RadRibbonButton Uid="102"
+                                             x:Name="RBtnPorDia"
+                                             Click="TipoConsultaSearch"
+                                             Content="Por día"
+                                             LargeImage="Resources/day.png"
+                                             Size="Large" />
+                    <telerik:RadRibbonButton Uid="103"
+                                             x:Name="RBtnPorPeriodo"
+                                             Click="TipoConsultaSearch"
+                                             Content="Por periodo"
+                                             LargeImage="Resources/year.png"
+                                             Size="Large" />
+                    <telerik:RadRibbonButton Uid="104"
+                                             x:Name="RBtnPorServidor"
+                                             Click="TipoConsultaSearch"
+                                             Content="Por funcionario"
+                                             LargeImage="Resources/funct.png"
+                                             Size="Large" />
+
+                </telerik:RadRibbonGroup>
+                <telerik:RadRibbonGroup Header="Acciones">
+                    <telerik:RadRibbonButton x:Name="RBtnRealizaConsulta"
+                                             Click="RBtnRealizaConsulta_Click"
+                                             Content="Realizar consulta"
+                                             LargeImage="Resources/search.png"
+                                             Size="Large" />
+                    <telerik:RadRibbonButton x:Name="RBtnImprimeReporte"
+                                             Click="RBtnImprimeReporte_Click"
+                                             Content="Imprime reporte"
+                                             LargeImage="Resources/report.png"
+                                             Size="Large" />
+                </telerik:RadRibbonGroup>
+            </telerik:RadRibbonTab>
         </telerik:RadRibbonView>
+
+        <DockPanel x:Name="CentralPanel"
+                   Grid.Row="1"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Stretch"
+                   LastChildFill="True" />
 
     </Grid>
 </Window>

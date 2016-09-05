@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Data.OleDb;
 using System.Linq;
 using System.Windows;
-using AsistenciaWpf.DataAccess;
 using AsistenciaWpf.Dto;
 
 namespace AsistenciaWpf.Model
@@ -13,29 +13,31 @@ namespace AsistenciaWpf.Model
     public class EmpleadosModel
     {
 
+        private readonly string connectionString = ConfigurationManager.ConnectionStrings["Base"].ConnectionString;
+
         public List<Empleados> GetListaEmpleados()
         {
             List<Empleados> empleados = new List<Empleados>();
 
-            OleDbConnection oleConn = DbConnectionDac.GetConexion();
+            OleDbConnection oleConn = new OleDbConnection(connectionString);
             OleDbCommand cmd;
             OleDbDataReader reader;
 
-            cmd = oleConn.CreateCommand();
-            cmd.Connection = oleConn;
             try
             {
                 oleConn.Open();
-                string miQry = "SELECT Id_Empleado, NombreCompleto,Id_Area FROM Empleados WHERE Estado <> 0 ORDER BY NombreCompleto";
+                const string miQry = "SELECT Id_Empleado, NombreCompleto,Id_Area FROM Empleados WHERE Estado <> 0 ORDER BY NombreCompleto";
                 cmd = new OleDbCommand(miQry, oleConn);
                 reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    Empleados empleado = new Empleados();
-                    empleado.IdEmpleado = Convert.ToInt32(reader["Id_Empleado"]);
-                    empleado.NombreCompleto = reader["NombreCompleto"].ToString();
-                    empleado.IdArea = Convert.ToInt32(reader["Id_Area"]);
+                    Empleados empleado = new Empleados()
+                    {
+                        IdEmpleado = Convert.ToInt32(reader["Id_Empleado"]),
+                        NombreCompleto = reader["NombreCompleto"].ToString(),
+                        IdArea = Convert.ToInt32(reader["Id_Area"])
+                    };
                     empleados.Add(empleado);
 
                 }
@@ -57,17 +59,15 @@ namespace AsistenciaWpf.Model
         {
             Empleados empleado = null;
 
-            OleDbConnection oleConn = DbConnectionDac.GetConexion();
+            OleDbConnection oleConn = new OleDbConnection(connectionString);
             OleDbCommand cmd;
             OleDbDataReader reader;
 
-            cmd = oleConn.CreateCommand();
-            cmd.Connection = oleConn;
             try
             {
                 oleConn.Open();
-                string miQry = "SELECT * FROM Empleados WHERE Expediente = " + expediente;// WHERE Id_Area = " + id_A;
-                cmd = new OleDbCommand(miQry, oleConn);
+                cmd = new OleDbCommand("SELECT * FROM Empleados WHERE Expediente = @Expediente", oleConn);
+                cmd.Parameters.AddWithValue("@Expediente", expediente);
                 reader = cmd.ExecuteReader();
 
                 while (reader.Read())
@@ -99,16 +99,14 @@ namespace AsistenciaWpf.Model
         {
             List<int> expedientes = new List<int>();
 
-            OleDbConnection oleConn = DbConnectionDac.GetConexion();
+            OleDbConnection oleConn = new OleDbConnection(connectionString);
             OleDbCommand cmd;
             OleDbDataReader reader;
 
-            cmd = oleConn.CreateCommand();
-            cmd.Connection = oleConn;
             try
             {
                 oleConn.Open();
-                string miQry = "SELECT Expediente FROM Empleados WHERE Expediente > 0 And Estado <> 0 ORDER BY Expediente";
+                const string miQry = "SELECT Expediente FROM Empleados WHERE Expediente > 0 And Estado <> 0 ORDER BY Expediente";
                 cmd = new OleDbCommand(miQry, oleConn);
                 reader = cmd.ExecuteReader();
 
@@ -133,7 +131,7 @@ namespace AsistenciaWpf.Model
         
         public bool SetNewEmployee(Empleados empleado)
         {
-            OleDbConnection connectionEpsOle = DbConnectionDac.GetConexion();
+            OleDbConnection connectionEpsOle = new OleDbConnection(connectionString);
             bool exito = false;
 
             try
@@ -146,13 +144,8 @@ namespace AsistenciaWpf.Model
                 OleDbDataReader reader;
                 OleDbCommand cmd;
 
-                cmd = connectionEpsOle.CreateCommand();
-                cmd.Connection = connectionEpsOle;
-
                 connectionEpsOle.Open();
-                string sqlCadena = "SELECT MAX(Id_Empleado) AS Emp FROM Empleados";
-                cmd = new OleDbCommand(sqlCadena, connectionEpsOle);
-
+                cmd = new OleDbCommand("SELECT MAX(Id_Empleado) AS Emp FROM Empleados", connectionEpsOle);
                 reader = cmd.ExecuteReader();
 
                 int idEmpleado = 0;
@@ -164,10 +157,8 @@ namespace AsistenciaWpf.Model
 
                 connectionEpsOle.Close();
 
-                sqlCadena = "SELECT * FROM Empleados WHERE Id_Empleado =0";
-
                 dataAdapter = new OleDbDataAdapter();
-                dataAdapter.SelectCommand = new OleDbCommand(sqlCadena, connectionEpsOle);
+                dataAdapter.SelectCommand = new OleDbCommand("SELECT * FROM Empleados WHERE Id_Empleado =0", connectionEpsOle);
 
 
                 dataAdapter.Fill(dataSet, "Empleado");
@@ -220,11 +211,9 @@ namespace AsistenciaWpf.Model
         /// <param name="empleado"></param>
         public void UpdateEmployee(Empleados empleado)
         {
-            OleDbConnection sqlConne = DbConnectionDac.GetConexion();
+            OleDbConnection sqlConne = new OleDbConnection(connectionString);
             OleDbDataAdapter dataAdapter;
             OleDbCommand cmd;
-            cmd = sqlConne.CreateCommand();
-            cmd.Connection = sqlConne;
 
             try
             {
@@ -292,7 +281,7 @@ namespace AsistenciaWpf.Model
         /// </summary>
         public void DisableEmployee(int expediente)
         {
-            OleDbConnection sqlConne = DbConnectionDac.GetConexion();
+            OleDbConnection sqlConne = new OleDbConnection(connectionString);
             OleDbCommand cmd;
 
             try

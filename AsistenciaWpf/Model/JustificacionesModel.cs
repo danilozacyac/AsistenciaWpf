@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.OleDb;
 using System.Linq;
 using System.Windows;
-using AsistenciaWpf.DataAccess;
 using AsistenciaWpf.Dto;
 
 namespace AsistenciaWpf.Model
 {
     public class JustificacionesModel
     {
+        private readonly string connectionString = ConfigurationManager.ConnectionStrings["Base"].ConnectionString;
 
         public List<PairPropertyObject> GetListaJustificaciones()
         {
-            OleDbConnection oleConne = DbConnectionDac.GetConexion();
+            OleDbConnection oleConne = new OleDbConnection(connectionString);
             OleDbCommand cmd;
             OleDbDataReader reader;
 

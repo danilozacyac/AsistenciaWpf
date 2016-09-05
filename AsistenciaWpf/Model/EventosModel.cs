@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Data.OleDb;
 using System.Linq;
 using System.Windows;
-using AsistenciaWpf.DataAccess;
 using AsistenciaWpf.Dto;
 
 namespace AsistenciaWpf.Model
 {
     public class EventosModel : ObservableCollection<Eventos>
     {
-        public EventosModel()
-        {
-        }
+        private readonly string connectionString = ConfigurationManager.ConnectionStrings["Base"].ConnectionString;
 
         /// <summary>
         /// Devuelve la lista de posibles justificantes a una falta que 
@@ -22,7 +20,7 @@ namespace AsistenciaWpf.Model
         /// <returns></returns>
         public List<PairPropertyObject> GetListaEventos()
         {
-            OleDbConnection oleConne = DbConnectionDac.GetConexion();
+            OleDbConnection oleConne = new OleDbConnection(connectionString);
             OleDbCommand cmd;
             OleDbDataReader reader;
 
@@ -73,7 +71,7 @@ namespace AsistenciaWpf.Model
         /// <param name="evento"></param>
         public bool SetEventoAislado(Eventos evento)
         {
-            OleDbConnection oleConne = DbConnectionDac.GetConexion();
+            OleDbConnection oleConne = new OleDbConnection(connectionString);
             OleDbCommand cmd;
 
             cmd = oleConne.CreateCommand();
@@ -116,7 +114,7 @@ namespace AsistenciaWpf.Model
         /// <param name="evento"></param>
         public void DeleteEvento(Eventos evento)
         {
-            OleDbConnection sqlConne = DbConnectionDac.GetConexion();
+            OleDbConnection sqlConne = new OleDbConnection(connectionString);
             OleDbCommand cmd;
 
             try
@@ -145,13 +143,13 @@ namespace AsistenciaWpf.Model
             }
         }
 
-        public List<Empleados> GetEventosConsulta(int tipoFiltro, int tipoEvento, object paramBusqueda)
+        public List<Personal> GetEventosConsulta(int tipoFiltro, int tipoEvento, object paramBusqueda)
         {
-            OleDbConnection oleConne = DbConnectionDac.GetConexion();
+            OleDbConnection oleConne = new OleDbConnection(connectionString);
             OleDbCommand cmd = null;
             OleDbDataReader reader;
 
-            List<Empleados> empleadosEventos = new List<Empleados>();
+            List<Personal> empleadosEventos = new List<Personal>();
 
             try
             {
@@ -164,7 +162,7 @@ namespace AsistenciaWpf.Model
                 switch (tipoFiltro)
                 {
                     //Por año
-                    case 0:
+                    case 100:
                         sqlCadena += " R.Año = @Year";
                         OleDbParameter year = new OleDbParameter("@Year", OleDbType.Numeric, 0);
                         year.Value = (Int32)paramBusqueda;
@@ -172,7 +170,7 @@ namespace AsistenciaWpf.Model
 
                         break;
                         //Por mes
-                    case 1: 
+                    case 101: 
                         sqlCadena += " R.Año = @Year AND R.Mes = @Mes";
                         OleDbParameter years = new OleDbParameter("@Year", OleDbType.Numeric, 0);
                         years.Value = DateTime.Now.Year;
@@ -182,7 +180,7 @@ namespace AsistenciaWpf.Model
                         cmd = this.GetFiltroPorTipoEvento(oleConne, new List<OleDbParameter>() { years, mes }, sqlCadena, tipoEvento);
                         break;
                         //Por día
-                    case 2: 
+                    case 102: 
                         sqlCadena += " R.Fecha = @Fecha";
                         OleDbParameter fecha = new OleDbParameter("@Fecha", OleDbType.Date, 0);
                         fecha.Value = ((DateTime)paramBusqueda).ToShortDateString();
@@ -190,7 +188,7 @@ namespace AsistenciaWpf.Model
                         cmd = this.GetFiltroPorTipoEvento(oleConne, new List<OleDbParameter>() { fecha }, sqlCadena, tipoEvento);
                         break;
                         //Por periodo
-                    case 3:
+                    case 103:
                         DateTime[] fechas = (DateTime[])paramBusqueda;
                         DateTime inicio = fechas[0].AddDays(-1);
                         DateTime final = fechas[1].AddDays(1);
@@ -205,7 +203,7 @@ namespace AsistenciaWpf.Model
 
                         break;
                         //Por servidor público
-                    case 4: 
+                    case 104: 
                         sqlCadena += " E.Id_Empleado = @Empleado";
                         OleDbParameter empleado = new OleDbParameter("@Empleado", OleDbType.Numeric, 0);
                         empleado.Value = (Int32)paramBusqueda;
@@ -234,7 +232,7 @@ namespace AsistenciaWpf.Model
                     }
                     else
                     {
-                        Empleados empleado = new Empleados();
+                        Personal empleado = new Personal();
 
                         empleado.Expediente = Convert.ToInt32(reader["Expediente"]);
                         empleado.IdEmpleado = Convert.ToInt32(reader["Id_empleado"]);
@@ -253,7 +251,7 @@ namespace AsistenciaWpf.Model
                     }
                 }
 
-                foreach (Empleados empl in empleadosEventos)
+                foreach (Personal empl in empleadosEventos)
                 {
                     empl.NumEventos = empl.MyEventos.Count();
                 }
@@ -267,7 +265,7 @@ namespace AsistenciaWpf.Model
                 oleConne.Close();
             }
 
-            return empleadosEventos;
+            return (from n in empleadosEventos orderby n.NombreCompleto select n).ToList();
         }
 
         private OleDbCommand GetFiltroPorTipoEvento(OleDbConnection oleConne, List<OleDbParameter> parameters, string sqlCadena, int tipoEvento)
@@ -318,7 +316,7 @@ namespace AsistenciaWpf.Model
         /// <returns></returns>
         public bool IsEventDayExist(Eventos evento)
         {
-            OleDbConnection oleConne = DbConnectionDac.GetConexion();
+            OleDbConnection oleConne = new OleDbConnection(connectionString);
             OleDbCommand cmd = null;
             OleDbDataReader reader;
 
@@ -331,20 +329,10 @@ namespace AsistenciaWpf.Model
                 string sqlCadena = "SELECT * FROM Registro_Inasis WHERE Año = @Year AND Mes = @Mes AND Dia = @Dia AND Id_Empleado = @Id";
 
                 cmd = new OleDbCommand(sqlCadena, oleConne);
-
-                OleDbParameter year = new OleDbParameter("@Year", OleDbType.Numeric, 0);
-                year.Value = evento.StartDate.Year;
-                cmd.Parameters.Add(year);
-
-                OleDbParameter mes = new OleDbParameter("@Mes", OleDbType.Numeric, 0);
-                mes.Value = evento.StartDate.Month;
-                cmd.Parameters.Add(mes); 
-                OleDbParameter dia = new OleDbParameter("@Dia", OleDbType.Numeric, 0);
-                dia.Value = evento.StartDate.Day;
-                cmd.Parameters.Add(dia); 
-                OleDbParameter empleado = new OleDbParameter("@Id", OleDbType.Numeric, 0);
-                empleado.Value = evento.IdEmpleado;
-                cmd.Parameters.Add(empleado);
+                cmd.Parameters.AddWithValue("@Year", evento.StartDate.Year);
+                cmd.Parameters.AddWithValue("@Mes", evento.StartDate.Month);
+                cmd.Parameters.AddWithValue("@Dia", evento.StartDate.Day);
+                cmd.Parameters.AddWithValue("@Id", evento.IdEmpleado);
 
                 reader = cmd.ExecuteReader();
 

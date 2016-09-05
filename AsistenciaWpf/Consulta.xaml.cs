@@ -17,13 +17,13 @@ namespace AsistenciaWpf
     {
         private int idEvento = 0;
         private readonly EventosModel modelEventos = null;
-        private List<Empleados> empleados = null;
+        private List<Personal> empleados = null;
 
         public Consulta()
         {
             InitializeComponent();
             this.modelEventos = new EventosModel();
-            this.empleados = new List<Empleados>();
+            this.empleados = new List<Personal>();
         }
 
         private void RadWindow_Loaded(object sender, RoutedEventArgs e)
@@ -151,7 +151,7 @@ namespace AsistenciaWpf
 
         private void BtnEliminar_Click(object sender, RoutedEventArgs e)
         {
-            foreach (Empleados empleado in empleados)
+            foreach (Personal empleado in empleados)
             {
                 List<Eventos> eventosDel = new List<Eventos>();
                 foreach (Eventos evento in empleado.MyEventos)

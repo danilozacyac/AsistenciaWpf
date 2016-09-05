@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using AsistenciaWpf.Utils;
+using Telerik.Windows.Controls;
 
 namespace AsistenciaWpf
 {
@@ -10,9 +11,12 @@ namespace AsistenciaWpf
     /// </summary>
     public partial class LogIn : Window
     {
+        
+
         public LogIn()
         {
             InitializeComponent();
+            StyleManager.ApplicationTheme = new Windows8Theme();
         }
 
         private void RbtnAceptar_Click(object sender, RoutedEventArgs e)

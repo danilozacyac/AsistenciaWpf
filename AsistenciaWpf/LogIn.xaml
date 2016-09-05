@@ -5,6 +5,7 @@
         Title="LogIn"
         Width="326"
         Height="249"
+        Icon="1357336438_24249.ico"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
     <Grid>

@@ -1,7 +1,6 @@
 ﻿<telerik:RadWindow x:Class="AsistenciaWpf.Consulta"
                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                   xmlns:DateFormatConverter="clr-namespace:AsistenciaWpf.Converter"
                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
                    xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
                    Width="750"
@@ -9,111 +8,17 @@
                    Header="Consulta"
                    Loaded="RadWindow_Loaded"
                    ResizeMode="NoResize"
-                   telerik:StyleManager.Theme="Windows7"
-                   WindowStartupLocation="CenterScreen">
+                   WindowStartupLocation="CenterScreen"
+                   telerik:StyleManager.Theme="Windows7">
 
     <Grid>
-        <Grid.Resources>
-            <DateFormatConverter:DateFormatConverter x:Key="DateFormatConverter" />
-        </Grid.Resources>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="65" />
             <RowDefinition Height="120" />
             <RowDefinition Height="*" />
             <RowDefinition Height="45" />
         </Grid.RowDefinitions>
-
-
-        <telerik:RadGridView Name="RgvEventos"
-                             Grid.Row="2"
-                             
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Stretch"
-                             AutoGenerateColumns="False"
-                             CanUserSortGroups="True"
-                             FilteringMode="Popup"
-                             Focusable="True"
-                             IsHitTestVisible="True"
-                             ItemsSource="{Binding}"
-                             SelectionMode="Multiple"
-                             ShowColumnHeaders="True"
-                             ShowGroupPanel="False">
-            <telerik:RadGridView.Columns>
-                <telerik:GridViewToggleRowDetailsColumn />
-
-                <telerik:GridViewDataColumn Width="120"
-                                            DataMemberBinding="{Binding Expediente}"
-                                            Header="Expediente" />
-                <telerik:GridViewDataColumn Width="*"
-                                            DataMemberBinding="{Binding NombreCompleto}"
-                                            Header="Nombre" />
-                <telerik:GridViewDataColumn Width="60"
-                                            DataMemberBinding="{Binding NumEventos}"
-                                            Header="Total" />
-                <!--
-                    <telerik:GridViewDataColumn Width="*"
-                    DataMemberBinding="{Binding StartDate,
-                    Converter={StaticResource DateFormatConverter}}"
-                    Header="Fecha" />
-                -->
-            </telerik:RadGridView.Columns>
-            <telerik:RadGridView.RowDetailsTemplate>
-                <DataTemplate>
-                    <telerik:RadTabControl x:Name="RadTabControl1"
-                                           Margin="8"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center">
-
-                        <telerik:RadTabItem Header="Incidentes">
-                            <telerik:RadGridView MaxWidth="800"
-                                                 MaxHeight="300"
-                                                 ShowGroupPanel="False"
-                                                 EditTriggers="CellClick"
-                                                 HorizontalAlignment="Stretch"
-                                                 AutoGenerateColumns="False"
-                                                 ItemsSource="{Binding MyEventos}">
-                                <telerik:RadGridView.Columns>
-
-                                    <telerik:GridViewCheckBoxColumn Width="30"
-                                                                    AutoSelectOnEdit="True"
-                                                                    DataMemberBinding="{Binding IsSelected}"
-                                                                    Header=""
-                                                                    IsFilterable="False" />
-                                    <telerik:GridViewDataColumn Width="80"
-                                                                DataMemberBinding="{Binding StartDate,
-                                                                                            Converter={StaticResource DateFormatConverter}}"
-                                                                Header="Fecha"
-                                                                IsFilterable="False"
-                                                                TextAlignment="Center" />
-                                    <telerik:GridViewDataColumn Width="100"
-                                                                DataMemberBinding="{Binding Descripcion}"
-                                                                Header="Descripcion" />
-                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding IdEvento}"
-                                                                Header="IdEvento"
-                                                                IsVisible="False" />
-                                    <telerik:GridViewDataColumn Width="200"
-                                                                DataMemberBinding="{Binding Justificante}"
-                                                                Header="Justificante"
-                                                                TextAlignment="Center" />
-                                    <telerik:GridViewDataColumn Width="*"
-                                                                DataMemberBinding="{Binding Observaciones}"
-                                                                Header="Observaciones"
-                                                                IsEnabled="False">
-                                        <telerik:GridViewDataColumn.Style>
-                                            <Style TargetType="{x:Type telerik:GridViewDataColumn}">
-                                                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Value}" />
-                                            </Style>
-                                        </telerik:GridViewDataColumn.Style>
-                                    </telerik:GridViewDataColumn>
-                                </telerik:RadGridView.Columns>
-                            </telerik:RadGridView>
-                        </telerik:RadTabItem>
-
-                    </telerik:RadTabControl>
-                </DataTemplate>
-            </telerik:RadGridView.RowDetailsTemplate>
-
-        </telerik:RadGridView>
         <TextBlock Name="textBlock1"
                    Height="23"
                    Margin="12,12,0,0"
@@ -249,18 +154,108 @@
                              ItemsSource="{Binding}"
                              SelectedValuePath="Identificador"
                              Visibility="Visible" />
+
+        <telerik:RadGridView Name="RgvEventos"
+                             Grid.Row="2"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             AutoGenerateColumns="False"
+                             CanUserSortGroups="True"
+                             FilteringMode="Popup"
+                             Focusable="True"
+                             IsHitTestVisible="True"
+                             ItemsSource="{Binding}"
+                             SelectionMode="Multiple"
+                             ShowColumnHeaders="True"
+                             ShowGroupPanel="False">
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewToggleRowDetailsColumn />
+
+                <telerik:GridViewDataColumn Width="120"
+                                            DataMemberBinding="{Binding Expediente}"
+                                            Header="Expediente" />
+                <telerik:GridViewDataColumn Width="*"
+                                            DataMemberBinding="{Binding NombreCompleto}"
+                                            Header="Nombre" />
+                <telerik:GridViewDataColumn Width="60"
+                                            DataMemberBinding="{Binding NumEventos}"
+                                            Header="Total" />
+                <!--
+                    <telerik:GridViewDataColumn Width="*"
+                    DataMemberBinding="{Binding StartDate,
+                    Converter={StaticResource DateFormatConverter}}"
+                    Header="Fecha" />
+                -->
+            </telerik:RadGridView.Columns>
+            <telerik:RadGridView.RowDetailsTemplate>
+                <DataTemplate>
+                    <telerik:RadTabControl x:Name="RadTabControl1"
+                                           Margin="8"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center">
+
+                        <telerik:RadTabItem Header="Incidentes">
+                            <telerik:RadGridView MaxWidth="800"
+                                                 MaxHeight="300"
+                                                 HorizontalAlignment="Stretch"
+                                                 AutoGenerateColumns="False"
+                                                 EditTriggers="CellClick"
+                                                 ItemsSource="{Binding MyEventos}"
+                                                 ShowGroupPanel="False">
+                                <telerik:RadGridView.Columns>
+
+                                    <telerik:GridViewCheckBoxColumn Width="30"
+                                                                    AutoSelectOnEdit="True"
+                                                                    DataMemberBinding="{Binding IsSelected}"
+                                                                    Header=""
+                                                                    IsFilterable="False" />
+                                    <telerik:GridViewDataColumn Width="80"
+                                                                DataMemberBinding="{Binding StartDate,
+                                                                                            StringFormat={}{0:dd/MM/yyyy }}"
+                                                                Header="Fecha"
+                                                                IsFilterable="False"
+                                                                TextAlignment="Center" />
+                                    <telerik:GridViewDataColumn Width="100"
+                                                                DataMemberBinding="{Binding Descripcion}"
+                                                                Header="Descripcion" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding IdEvento}"
+                                                                Header="IdEvento"
+                                                                IsVisible="False" />
+                                    <telerik:GridViewDataColumn Width="200"
+                                                                DataMemberBinding="{Binding Justificante}"
+                                                                Header="Justificante"
+                                                                TextAlignment="Center" />
+                                    <telerik:GridViewDataColumn Width="*"
+                                                                DataMemberBinding="{Binding Observaciones}"
+                                                                Header="Observaciones"
+                                                                IsEnabled="False">
+                                        <telerik:GridViewDataColumn.Style>
+                                            <Style TargetType="{x:Type telerik:GridViewDataColumn}">
+                                                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Value}" />
+                                            </Style>
+                                        </telerik:GridViewDataColumn.Style>
+                                    </telerik:GridViewDataColumn>
+                                </telerik:RadGridView.Columns>
+                            </telerik:RadGridView>
+                        </telerik:RadTabItem>
+
+                    </telerik:RadTabControl>
+                </DataTemplate>
+            </telerik:RadGridView.RowDetailsTemplate>
+
+        </telerik:RadGridView>
         <telerik:RadButton Name="BtnConsulta"
-                Grid.Row="3"
-                Width="102"
-                Height="40"
-                Margin="12,3,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Click="BtnConsulta_Click">
+                           Grid.Row="3"
+                           Width="102"
+                           Height="40"
+                           Margin="12,3,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Click="BtnConsulta_Click">
             <StackPanel HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Orientation="Horizontal">
-                <Image Source="/Asistencia;component/Images/search.png" />
+                <Image Source="Resources/search.png" />
                 <StackPanel HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             Orientation="Vertical">
@@ -280,7 +275,7 @@
             <StackPanel HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Orientation="Horizontal">
-                <Image Source="/Asistencia;component/Images/report.png" />
+                <Image Source="Resources/report.png" />
                 <StackPanel HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             Orientation="Vertical">
@@ -290,16 +285,17 @@
             </StackPanel>
         </telerik:RadButton>
         <telerik:RadButton Name="BtnEliminar"
-                Grid.Row="3"
-                Width="102"
-                Height="40"
-                Margin="130,3,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top" Click="BtnEliminar_Click">
+                           Grid.Row="3"
+                           Width="102"
+                           Height="40"
+                           Margin="130,3,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Click="BtnEliminar_Click">
             <StackPanel HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Orientation="Horizontal">
-                <Image Source="/Asistencia;component/Images/search.png" />
+                <Image Source="Resources/search.png" />
                 <StackPanel HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             Orientation="Vertical">

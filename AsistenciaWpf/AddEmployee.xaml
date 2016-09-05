@@ -6,8 +6,8 @@
                    Height="300"
                    Header="Agregar empleado"
                    Loaded="RadWindow_Loaded"
-                   telerik:StyleManager.Theme="Metro"
-                   WindowStartupLocation="CenterScreen">
+                   WindowStartupLocation="CenterScreen"
+                   telerik:StyleManager.Theme="Metro">
 
 
 

@@ -11,10 +11,10 @@ namespace AsistenciaWpf.Reporting
 {
     public class ReporteIncidentes
     {
-        private readonly List<Empleados> empleados = null;
+        private readonly List<Personal> empleados = null;
         private iTextSharp.text.Document myDocument;
 
-        public ReporteIncidentes(List<Empleados> empleados)
+        public ReporteIncidentes(List<Personal> empleados)
         {
             this.empleados = empleados;
         }
@@ -38,7 +38,7 @@ namespace AsistenciaWpf.Reporting
 
                 int consec = 1;
 
-                foreach (Empleados empleado in empleados)
+                foreach (Personal empleado in empleados)
                 {
 
                     Chapter chapter1 = new Chapter(new Paragraph(empleado.NombreCompleto,Fuentes.Encabezados), consec);
