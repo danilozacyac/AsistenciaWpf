@@ -1,13 +1,12 @@
-﻿<Window x:Class="AsistenciaWpf.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:my="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon"
-        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-        Title="Coordinación de Compilación y Sistematización de Tesis"
-        Width="525"
-        Height="350"
-        Icon="1357336438_24249.ico"
-        WindowState="Maximized">
+﻿<telerik:RadWindow x:Class="AsistenciaWpf.MainWindow"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:my="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon"
+                   xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                   Width="525"
+                   Height="350"
+                   Header="Coordinación de Compilación y Sistematización de Tesis"
+                   WindowState="Maximized">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -15,52 +14,21 @@
         </Grid.RowDefinitions>
 
         <telerik:RadRibbonView x:Name="BarraPrincipal"
+                               telerik:KeyTipService.IsKeyTipsEnabled="True"
                                ApplicationButtonImageSource="{Binding AppIcon}"
                                ApplicationButtonVisibility="Collapsed"
                                ApplicationName="Control de Asistencia"
-                               BackstageClippingElement="{Binding ElementName=RootGrid}"
-                               telerik:KeyTipService.IsKeyTipsEnabled="True">
-            <telerik:RadRibbonTab Header="Principal">
-                <telerik:RadRibbonGroup>
+                               BackstageClippingElement="{Binding ElementName=RootGrid}">
+
+            <telerik:RadRibbonTab x:Name="TabConsultas" Header="Consultas">
+                <telerik:RadRibbonGroup Header="Eventos">
                     <telerik:RadRibbonButton Name="RegistraEventos"
                                              Click="RegistraEventos_Click"
                                              IsAutoSize="True"
                                              LargeImage="Resources/notes.png"
                                              Size="Large"
                                              Text="Registrar Eventos" />
-                    <telerik:RadRibbonButton Name="ConsultaEventos"
-                                             Click="ConsultaEventos_Click"
-                                             IsAutoSize="True"
-                                             LargeImage="Resources/search.png"
-                                             Size="Large"
-                                             Text="Consultar" />
                 </telerik:RadRibbonGroup>
-                <!--  <telerik:RadRibbonGroup Header="Reportes" />  -->
-                <telerik:RadRibbonGroup Header="Servidores Públicos">
-                    <telerik:RadRibbonButton Name="AgregaServidor"
-                                             Click="AgregaServidor_Click"
-                                             IsAutoSize="True"
-                                             LargeImage="Resources/addUser.png"
-                                             Size="Large"
-                                             Text="Agregar" />
-                    <telerik:RadRibbonButton Name="EditarServidor"
-                                             Click="EditarServidor_Click"
-                                             IsAutoSize="True"
-                                             LargeImage="Resources/editUser.png"
-                                             Size="Large"
-                                             Text="Editar" />
-                    <telerik:RadRibbonButton Name="EliminarServidor"
-                                             Click="EliminarServidor_Click"
-                                             IsAutoSize="True"
-                                             LargeImage="Resources/deleteUser.png"
-                                             Size="Large"
-                                             Text="Eliminar" />
-                </telerik:RadRibbonGroup>
-
-            </telerik:RadRibbonTab>
-            <telerik:RadRibbonTab x:Name="TabConsultas"
-                                  Header="Consultas"
-                                  Visibility="Collapsed">
                 <telerik:RadRibbonGroup Header="Tipo de Consulta">
                     <telerik:RadRibbonButton Uid="100"
                                              x:Name="RBtnPorYear"
@@ -107,6 +75,29 @@
                                              Size="Large" />
                 </telerik:RadRibbonGroup>
             </telerik:RadRibbonTab>
+            <telerik:RadRibbonTab Header="Personal">
+                <telerik:RadRibbonGroup Header="Servidores Públicos">
+                    <telerik:RadRibbonButton Name="AgregaServidor"
+                                             Click="AgregaServidor_Click"
+                                             IsAutoSize="True"
+                                             LargeImage="Resources/addUser.png"
+                                             Size="Large"
+                                             Text="Agregar" />
+                    <telerik:RadRibbonButton Name="EditarServidor"
+                                             Click="EditarServidor_Click"
+                                             IsAutoSize="True"
+                                             LargeImage="Resources/editUser.png"
+                                             Size="Large"
+                                             Text="Editar" />
+                    <telerik:RadRibbonButton Name="EliminarServidor"
+                                             Click="EliminarServidor_Click"
+                                             IsAutoSize="True"
+                                             LargeImage="Resources/deleteUser.png"
+                                             Size="Large"
+                                             Text="Eliminar" />
+                </telerik:RadRibbonGroup>
+
+            </telerik:RadRibbonTab>
         </telerik:RadRibbonView>
 
         <DockPanel x:Name="CentralPanel"
@@ -116,4 +107,4 @@
                    LastChildFill="True" />
 
     </Grid>
-</Window>
+</telerik:RadWindow>

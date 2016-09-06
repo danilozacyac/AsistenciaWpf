@@ -6,10 +6,7 @@
                    Height="300"
                    Header="Agregar empleado"
                    Loaded="RadWindow_Loaded"
-                   WindowStartupLocation="CenterScreen"
-                   telerik:StyleManager.Theme="Metro">
-
-
+                   WindowStartupLocation="CenterScreen">
 
     <Grid x:Name="datosEmpleado">
         <Grid.Resources>
@@ -96,25 +93,27 @@
                              ItemsSource="{Binding}"
                              SelectedValuePath="IdArea" />
         <telerik:RadButton Name="BtnCancelar"
-                           Width="77"
-                           Height="33"
-                           Margin="367,221,0,0"
+                           Width="85"
+                           Height="27"
+                           Margin="359,221,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Click="BtnCancelar_Click"
                            Content="Cancelar"
-                           IsCancel="True" />
+                           IsCancel="True"
+                           Style="{StaticResource BlueButton}" />
         <telerik:RadButton Name="BtnAceptar"
                            Width="77"
-                           Height="33"
-                           Margin="284,221,0,0"
+                           Height="27"
+                           Margin="277,221,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Click="BtnAceptar_Click"
                            Command="New"
                            Content="Aceptar"
                            IsCancel="False"
-                           IsDefault="True" />
+                           IsDefault="True"
+                           Style="{StaticResource BlueButton}" />
         <Label Height="28"
                Margin="30,35,0,0"
                HorizontalAlignment="Left"

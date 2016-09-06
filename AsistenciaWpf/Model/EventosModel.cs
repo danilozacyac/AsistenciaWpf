@@ -190,8 +190,8 @@ namespace AsistenciaWpf.Model
                         //Por periodo
                     case 103:
                         DateTime[] fechas = (DateTime[])paramBusqueda;
-                        DateTime inicio = fechas[0].AddDays(-1);
-                        DateTime final = fechas[1].AddDays(1);
+                        DateTime inicio = fechas[0];//.AddDays(-1);
+                        DateTime final = fechas[1];//.AddDays(1);
 
                         sqlCadena += " R.Fecha BETWEEN @FechaIni AND @FechaFin";
                         OleDbParameter fechaIni = new OleDbParameter("@FechaIni", OleDbType.Date, 0);

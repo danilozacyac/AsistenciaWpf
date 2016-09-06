@@ -75,6 +75,8 @@ namespace AsistenciaWpf.Controles
             RadJustifica.Visibility = visible;
             RadNoJustifica.Visibility = visible;
             RcbJustificantes.Visibility = visible;
+            LblEvento.Visibility = visible;
+            LblMotivo.Visibility = visible;
 
             if (idEvento != 1000)
                 RadJustifica.IsChecked = false;

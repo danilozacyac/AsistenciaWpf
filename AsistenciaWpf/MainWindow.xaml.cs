@@ -9,19 +9,25 @@ namespace AsistenciaWpf
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow 
     {
         public MainWindow()
         {
             InitializeComponent();
             //List<int> exp = ExpedientesSingleton.Compartidos;
-            
+            con = new Consultas();
+
+            CentralPanel.Children.Add(con);
+            TabConsultas.Visibility = Visibility.Visible;
+            BarraPrincipal.SelectedItem = TabConsultas;
         }
 
         private void RegistraEventos_Click(object sender, RoutedEventArgs e)
         {
-            Prueba preuaba = new Prueba();
-            preuaba.Show();
+            RegistroEventos registro = new RegistroEventos();
+            registro.ShowDialog();
+            //Prueba preuaba = new Prueba();
+            //preuaba.Show();
         }
 
         private void AgregaServidor_Click(object sender, RoutedEventArgs e)

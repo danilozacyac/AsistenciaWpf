@@ -4,10 +4,10 @@
                    xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
                    Width="498"
                    Height="300"
+                   telerik:StyleManager.Theme="Windows7"
                    Header="Eliminar empleado"
                    Loaded="RadWindow_Loaded"
                    ResizeMode="NoResize"
-                   telerik:StyleManager.Theme="Windows7"
                    WindowStartupLocation="CenterScreen">
     <Grid>
         <Label Height="28"

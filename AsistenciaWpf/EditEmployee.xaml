@@ -7,7 +7,6 @@
                    Header="Actualizar datos empleado"
                    Loaded="RadWindow_Loaded"
                    ResizeMode="NoResize"
-                   telerik:StyleManager.Theme="Windows7"
                    WindowStartupLocation="CenterScreen">
     <Grid>
         <Label Height="28"
@@ -46,24 +45,26 @@
                              ItemsSource="{Binding}"
                              SelectedValuePath="IdArea" />
         <telerik:RadButton Name="BtnCancelar"
-                           Width="77"
-                           Height="33"
-                           Margin="367,221,0,0"
+                           Width="84"
+                           Height="31"
+                           Margin="360,221,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Click="BtnCancelar_Click"
                            Content="Cancelar"
-                           IsCancel="True" />
+                           IsCancel="True"
+                           Style="{StaticResource BlueButton}" />
         <telerik:RadButton Name="BtnAceptar"
                            Width="77"
-                           Height="33"
-                           Margin="284,221,0,0"
+                           Height="31"
+                           Margin="278,221,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Click="BtnAceptar_Click"
                            Content="Aceptar"
                            IsCancel="False"
-                           IsDefault="True" />
+                           IsDefault="True"
+                           Style="{StaticResource BlueButton}" />
         <Label Height="28"
                Margin="30,35,0,0"
                HorizontalAlignment="Left"
@@ -88,7 +89,7 @@
             <telerik:RadButton.Content>
                 <Image Width="Auto"
                        Height="Auto"
-                       Source="/Asistencia;component/Images/search.png" />
+                       Source="Resources/search.png" />
             </telerik:RadButton.Content>
         </telerik:RadButton>
 

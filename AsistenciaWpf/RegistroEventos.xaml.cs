@@ -4,24 +4,23 @@ using System.Windows;
 using AsistenciaWpf.Dto;
 using AsistenciaWpf.Model;
 using AsistenciaWpf.Singletons;
-using Telerik.Windows.Controls;
 using AsistenciaWpf.Utils;
+using Telerik.Windows.Controls;
 
 namespace AsistenciaWpf
 {
     /// <summary>
-    /// Interaction logic for Prueba.xaml
+    /// Interaction logic for RegistroEventos.xaml
     /// </summary>
-    public partial class Prueba
+    public partial class RegistroEventos
     {
         private int idEvento = 0;
 
-        public Prueba()
+        public RegistroEventos()
         {
             InitializeComponent();
         }
 
-       
 
         private void RadWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -62,11 +61,13 @@ namespace AsistenciaWpf
 
             Visibility visible = (btn.Name.Equals("BtnInasistencia")) ? Visibility.Visible : Visibility.Collapsed;
 
-            RadJustifica.Visibility = visible;
-            RadNoJustifica.Visibility = visible;
-            RcbJustificantes.Visibility = visible;
-            LblObservaciones.Visibility = visible;
-            TxtObservaciones.Visibility = visible;
+            JustificaNo.Visibility = visible;
+            Gmotivos.Visibility = visible;
+
+            RadJustifica.IsChecked = false;
+            RadNoJustifica.IsChecked = false;
+            RcbJustificantes.SelectedIndex = -1;
+            
             LblAl.Visibility = visible;
             RdpHasta.Visibility = visible;
 
@@ -87,6 +88,12 @@ namespace AsistenciaWpf
             evento.EndDate = (idEvento == 1) ? RdpHasta.SelectedDate.Value : evento.StartDate;
             evento.IdIncidente = (idEvento == 1) ? Convert.ToInt32(RcbJustificantes.SelectedValue) : 0;
             evento.Observaciones = (idEvento == 1) ? TxtObservaciones.Text : " ";
+
+            if (idEvento == 1 && RadJustifica.IsChecked == true && evento.IdIncidente == 0)
+            {
+                MessageBox.Show("Selecciona el motivo de justificación de esta inasistencia", "Atención:", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
 
             bool isEventRegisterOk = false;
 
@@ -115,6 +122,22 @@ namespace AsistenciaWpf
                 RdpHasta.SelectedDate = RdpDesde.SelectedDate;
                 RdpHasta.SelectableDateStart = RdpDesde.SelectedDate;
             }
+        }
+
+        private void RadJustifica_Checked(object sender, RoutedEventArgs e)
+        {
+            RcbJustificantes.Visibility = Visibility.Visible;
+        }
+
+        private void RadNoJustifica_Checked(object sender, RoutedEventArgs e)
+        {
+            Gmotivos.Visibility = Visibility.Collapsed;
+            RcbJustificantes.SelectedIndex = -1;
+        }
+
+        private void BtnCancelar_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 
